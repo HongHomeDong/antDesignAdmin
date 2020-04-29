@@ -1,15 +1,12 @@
 <template>
-  <div>
-    Monitor
+  <div class="main">
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Monitor'
 }
 </script>
 
-<style scoped>
-
+<style lang="less" scoped>
 </style>

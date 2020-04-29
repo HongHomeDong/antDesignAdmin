@@ -6,11 +6,26 @@
         <a-input
           size="large"
           type="text"
-          placeholder="邮箱"
-          v-decorator="['email', {rules: [{ required: true, type: 'email', message: '请输入邮箱地址' }], validateTrigger: ['change', 'blur']}]"
+          placeholder="用户名称"
+          v-decorator="['username', {rules: [{ required: true, type: 'any', message: '请输入用户名称' }], validateTrigger: ['change', 'blur']}]"
         ></a-input>
       </a-form-item>
-
+      <a-form-item>
+        <a-input
+          size="large"
+          type="text"
+          placeholder="用户code"
+          v-decorator="['usercode', {rules: [{ required: true, type: 'any', message: '请输入用户CODE' }], validateTrigger: ['change', 'blur']}]"
+        ></a-input>
+      </a-form-item>
+      <a-form-item>
+        <a-input size="large" placeholder="11 位手机号" v-decorator="['mobile', {rules: [{ required: true, message: '请输入正确的手机号', pattern: /^1[3456789]\d{9}$/ }, { validator: this.handlePhoneCheck } ], validateTrigger: ['change', 'blur'] }]">
+          <a-select slot="addonBefore" size="large" defaultValue="+86">
+            <a-select-option value="+86">+86</a-select-option>
+            <a-select-option value="+87">+87</a-select-option>
+          </a-select>
+        </a-input>
+      </a-form-item>
       <a-popover
         placement="rightTop"
         :trigger="['focus']"
@@ -46,41 +61,6 @@
           v-decorator="['password2', {rules: [{ required: true, message: '至少6位密码，区分大小写' }, { validator: this.handlePasswordCheck }], validateTrigger: ['change', 'blur']}]"
         ></a-input>
       </a-form-item>
-
-      <a-form-item>
-        <a-input size="large" placeholder="11 位手机号" v-decorator="['mobile', {rules: [{ required: true, message: '请输入正确的手机号', pattern: /^1[3456789]\d{9}$/ }, { validator: this.handlePhoneCheck } ], validateTrigger: ['change', 'blur'] }]">
-          <a-select slot="addonBefore" size="large" defaultValue="+86">
-            <a-select-option value="+86">+86</a-select-option>
-            <a-select-option value="+87">+87</a-select-option>
-          </a-select>
-        </a-input>
-      </a-form-item>
-      <!--<a-input-group size="large" compact>
-            <a-select style="width: 20%" size="large" defaultValue="+86">
-              <a-select-option value="+86">+86</a-select-option>
-              <a-select-option value="+87">+87</a-select-option>
-            </a-select>
-            <a-input style="width: 80%" size="large" placeholder="11 位手机号"></a-input>
-          </a-input-group>-->
-
-      <a-row :gutter="16">
-        <a-col class="gutter-row" :span="16">
-          <a-form-item>
-            <a-input size="large" type="text" placeholder="验证码" v-decorator="['captcha', {rules: [{ required: true, message: '请输入验证码' }], validateTrigger: 'blur'}]">
-              <a-icon slot="prefix" type="mail" :style="{ color: 'rgba(0,0,0,.25)' }"/>
-            </a-input>
-          </a-form-item>
-        </a-col>
-        <a-col class="gutter-row" :span="8">
-          <a-button
-            class="getCaptcha"
-            size="large"
-            :disabled="state.smsSendBtn"
-            @click.stop.prevent="getCaptcha"
-            v-text="!state.smsSendBtn && '获取验证码'||(state.time+' s')"></a-button>
-        </a-col>
-      </a-row>
-
       <a-form-item>
         <a-button
           size="large"
@@ -184,7 +164,6 @@ export default {
 
     handlePasswordCheck (rule, value, callback) {
       const password = this.form.getFieldValue('password')
-      console.log('value', value)
       if (value === undefined) {
         callback(new Error('请输入密码'))
       }
@@ -195,10 +174,6 @@ export default {
     },
 
     handlePhoneCheck (rule, value, callback) {
-      console.log('handlePhoneCheck, rule:', rule)
-      console.log('handlePhoneCheck, value', value)
-      console.log('handlePhoneCheck, callback', callback)
-
       callback()
     },
 
@@ -212,10 +187,25 @@ export default {
 
     handleSubmit () {
       const { form: { validateFields }, state, $router } = this
+      this.registerBtn = true
       validateFields({ force: true }, (err, values) => {
         if (!err) {
           state.passwordLevelChecked = false
-          $router.push({ name: 'registerResult', params: { ...values } })
+          setTimeout(() => {
+            this.registerBtn = false
+            this.$confirm({
+              title: '注册成功',
+              content: '是否返回登录页面？',
+              onOk () {
+                $router.push({ name: 'login', params: { ...values } })
+              },
+              onCancel () {
+                return false
+              }
+            })
+          }, 1000)
+        } else {
+          this.registerBtn = false
         }
       })
     },
