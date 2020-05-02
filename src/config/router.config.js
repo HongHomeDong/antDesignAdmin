@@ -17,13 +17,52 @@ export const asyncRouterMap = [
         name: 'dashboard',
         redirect: '/dashboard/workplace',
         component: RouteView,
-        meta: { title: '仪表台', keepAlive: true, icon: bxAnaalyse, permission: ['dashboard'] },
+        meta: { title: '仪表台', keepAlive: true, icon: bxAnaalyse },
         children: [
           {
             path: 'workplace',
             name: 'Workplace',
+            redirect: '/dashboard/workplace/Customer',
+            hideChildrenInMenu: true,
             component: () => import('@/views/dashboard/Workplace'),
-            meta: { title: '工作台', keepAlive: true, permission: ['dashboard'] }
+            meta: { title: '工作台', keepAlive: true },
+            children: [
+              {
+                path: 'Customer',
+                name: 'Customer',
+                hidden: true,
+                component: () => import('@/views/dashboard/Customer'),
+                meta: { keepAlive: false }
+              },
+              {
+                path: 'Bank',
+                name: 'Bank',
+                hidden: true,
+                component: () => import('@/views/dashboard/Bank'),
+                meta: { keepAlive: false }
+              },
+              {
+                path: 'ReceivePerson',
+                name: 'ReceivePerson',
+                hidden: true,
+                component: () => import('@/views/dashboard/ReceivePerson'),
+                meta: { keepAlive: false }
+              },
+              {
+                path: 'City',
+                name: 'City',
+                hidden: true,
+                component: () => import('@/views/dashboard/City'),
+                meta: { keepAlive: false }
+              }
+            ]
+          },
+          {
+            path: 'cardDetail',
+            name: 'cardDetail',
+            hidden: true,
+            component: () => import('@/views/dashboard/CardDetail'),
+            meta: { keepAlive: true }
           }
         ]
       }
@@ -54,11 +93,6 @@ export const constantRouterMap = [
         path: 'register',
         name: 'register',
         component: () => import(/* webpackChunkName: "user" */ '@/views/user/Register')
-      },
-      {
-        path: 'recover',
-        name: 'recover',
-        component: () => import(/* webpackChunkName: "user" */ '@/views/user/Recover')
       }
     ]
   },

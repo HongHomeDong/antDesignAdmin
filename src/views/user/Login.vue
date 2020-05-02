@@ -46,12 +46,10 @@
       </a-tabs>
 
       <a-form-item>
-        <router-link class="register" :to="{ name: 'register' }">注册账户</router-link>
         <router-link
-          :to="{ name: 'recover'}"
-          class="forge-password"
+          class="register"
           style="float: right;"
-        >忘记密码</router-link>
+          :to="{ name: 'register' }">注册账户</router-link>
       </a-form-item>
 
       <a-form-item style="margin-top:24px">

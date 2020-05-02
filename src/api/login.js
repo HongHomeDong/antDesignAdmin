@@ -1,4 +1,3 @@
-import api from './index'
 import { axios } from '@/utils/request'
 
 /**
@@ -14,54 +13,30 @@ import { axios } from '@/utils/request'
  */
 export function login (parameter) {
   return axios({
-    url: '/auth/login',
+    url: '/v1/account/login/username',
     method: 'post',
     data: parameter
-  })
-}
-
-export function getSmsCaptcha (parameter) {
-  return axios({
-    url: api.SendSms,
-    method: 'post',
-    data: parameter
-  })
-}
-
-export function getInfo () {
-  return axios({
-    url: '/user/info',
-    method: 'get',
-    headers: {
-      'Content-Type': 'application/json;charset=UTF-8'
-    }
-  })
-}
-
-export function getCurrentUserNav (token) {
-  return axios({
-    url: '/user/nav',
-    method: 'get'
   })
 }
 
 export function logout () {
   return axios({
-    url: '/auth/logout',
-    method: 'post',
-    headers: {
-      'Content-Type': 'application/json;charset=UTF-8'
-    }
+    url: '/v1/account/logout',
+    method: 'post'
   })
 }
 
-/**
- * get user 2step code open?
- * @param parameter {*}
- */
-export function get2step (parameter) {
+export function modifyPassword (parameter) {
   return axios({
-    url: api.twoStepCode,
+    url: '/v1/account/password/modify',
+    method: 'post',
+    data: parameter
+  })
+}
+
+export function createUser (parameter) {
+  return axios({
+    url: '/v1/account/create',
     method: 'post',
     data: parameter
   })

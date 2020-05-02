@@ -9,7 +9,12 @@ export function welcome () {
   const index = Math.floor(Math.random() * arr.length)
   return arr[index]
 }
-
+// 获取基础URL
+export function getBaseURL () {
+  const origin = window.location.origin
+  const baseURL = process.env.NODE_ENV === 'production' ? origin + '/' : origin + '/api/'
+  return baseURL
+}
 /**
  * 触发 window.resize
  */

@@ -19,10 +19,9 @@
         ></a-input>
       </a-form-item>
       <a-form-item>
-        <a-input size="large" placeholder="11 位手机号" v-decorator="['mobile', {rules: [{ required: true, message: '请输入正确的手机号', pattern: /^1[3456789]\d{9}$/ }, { validator: this.handlePhoneCheck } ], validateTrigger: ['change', 'blur'] }]">
+        <a-input size="large" placeholder="11 位手机号" v-decorator="['phone', {rules: [{ required: true, message: '请输入正确的手机号', pattern: /^1[3456789]\d{9}$/ }, { validator: this.handlePhoneCheck } ], validateTrigger: ['change', 'blur'] }]">
           <a-select slot="addonBefore" size="large" defaultValue="+86">
             <a-select-option value="+86">+86</a-select-option>
-            <a-select-option value="+87">+87</a-select-option>
           </a-select>
         </a-input>
       </a-form-item>
@@ -80,7 +79,7 @@
 
 <script>
 import { mixinDevice } from '@/utils/mixin.js'
-import { getSmsCaptcha } from '@/api/login'
+import { createUser } from '@/api/login'
 
 const levelNames = {
   0: '低',
@@ -190,62 +189,35 @@ export default {
       this.registerBtn = true
       validateFields({ force: true }, (err, values) => {
         if (!err) {
-          state.passwordLevelChecked = false
-          setTimeout(() => {
-            this.registerBtn = false
-            this.$confirm({
-              title: '注册成功',
-              content: '是否返回登录页面？',
-              onOk () {
-                $router.push({ name: 'login', params: { ...values } })
-              },
-              onCancel () {
-                return false
-              }
+          const { username, usercode, password, phone } = this.form.getFieldsValue()
+          createUser({
+            username,
+            usercode,
+            password,
+            phone
+          })
+            .then(res => {
+              state.passwordLevelChecked = false
+              this.registerBtn = false
+              this.$confirm({
+                title: '注册成功',
+                content: '是否返回登录页面？',
+                onOk () {
+                  $router.push({ name: 'login', params: { ...values } })
+                },
+                onCancel () {
+                  return false
+                }
+              })
             })
-          }, 1000)
+            .catch(() => {
+              state.passwordLevelChecked = false
+              this.registerBtn = false
+            })
         } else {
           this.registerBtn = false
         }
       })
-    },
-
-    getCaptcha (e) {
-      e.preventDefault()
-      const { form: { validateFields }, state, $message, $notification } = this
-
-      validateFields(['mobile'], { force: true },
-        (err, values) => {
-          if (!err) {
-            state.smsSendBtn = true
-
-            const interval = window.setInterval(() => {
-              if (state.time-- <= 0) {
-                state.time = 60
-                state.smsSendBtn = false
-                window.clearInterval(interval)
-              }
-            }, 1000)
-
-            const hide = $message.loading('验证码发送中..', 0)
-
-            getSmsCaptcha({ mobile: values.mobile }).then(res => {
-              setTimeout(hide, 2500)
-              $notification['success']({
-                message: '提示',
-                description: '验证码获取成功，您的验证码为：' + res.result.captcha,
-                duration: 8
-              })
-            }).catch(err => {
-              setTimeout(hide, 1)
-              clearInterval(interval)
-              state.time = 60
-              state.smsSendBtn = false
-              this.requestFailed(err)
-            })
-          }
-        }
-      )
     },
     requestFailed (err) {
       this.$notification['error']({

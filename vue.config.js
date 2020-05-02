@@ -5,6 +5,7 @@ const createThemeColorReplacerPlugin = require('./config/plugin.config')
 function resolve (dir) {
   return path.join(__dirname, dir)
 }
+const baseUrl = '/'
 
 const isProd = process.env.NODE_ENV === 'production'
 
@@ -28,6 +29,7 @@ const assetsCDN = {
 
 // vue.config.js
 const vueConfig = {
+  publicPath: baseUrl,
   configureWebpack: {
     // webpack plugins
     plugins: [
@@ -90,9 +92,10 @@ const vueConfig = {
     // If you want to turn on the proxy, please remove the mockjs /src/main.jsL11
     // proxy: {
     //   '/api': {
-    //     target: 'https://mock.ihx.me/mock/5baf3052f7da7e07e04a5116/antd-pro',
+    //     target: 'http://scav2dev.bjqwer.wmqhealth.com',
     //     ws: false,
-    //     changeOrigin: true
+    //     changeOrigin: true,
+    //     pathRewrite: { '^/api': '' }
     //   }
     // }
   },

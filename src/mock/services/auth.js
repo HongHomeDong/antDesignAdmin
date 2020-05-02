@@ -14,20 +14,7 @@ const login = (options) => {
   }
 
   return builder({
-    'id': Mock.mock('@guid'),
     'name': Mock.mock('@name'),
-    'usercode': 'admin',
-    'password': '',
-    'avatar': 'https://gw.alipayobjects.com/zos/rmsportal/jZUIxmJycoymBprLOUbT.png',
-    'status': 1,
-    'telephone': '',
-    'lastLoginIp': '27.154.74.117',
-    'lastLoginTime': 1534837621348,
-    'creatorId': 'admin',
-    'createTime': 1497160610259,
-    'deleted': 0,
-    'roleId': 'admin',
-    'lang': 'zh-CN',
     'token': '4291d7da9005377ec9aec4a71ea837f'
   }, '', 200, { 'Custom-Header': Mock.mock('@guid') })
 }
@@ -44,7 +31,17 @@ const twofactor = () => {
   return builder({ stepCode: Mock.mock('@integer(0, 1)') })
 }
 
-Mock.mock(/\/auth\/login/, 'post', login)
-Mock.mock(/\/auth\/logout/, 'post', logout)
+const modifyPassword = () => {
+  return builder({}, '[测试接口] 重置成功')
+}
+
+const createUser = () => {
+  return builder({}, '[测试接口] 添加成功')
+}
+Mock.mock(/\/v1\/account\/login\/username/, 'post', login)
+Mock.mock(/\/v1\/account\/password\/modify/, 'post', modifyPassword)
+Mock.mock(/\/v1\/account\/logout/, 'post', logout)
+Mock.mock(/\/v1\/account\/create/, 'post', createUser)
+
 Mock.mock(/\/account\/sms/, 'post', smsCaptcha)
 Mock.mock(/\/auth\/2step-code/, 'post', twofactor)

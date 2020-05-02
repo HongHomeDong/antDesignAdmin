@@ -4,13 +4,13 @@ import store from '@/store'
 import notification from 'ant-design-vue/es/notification'
 import { VueAxios } from './axios'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
+import { getBaseURL } from '@/utils/util'
 
 // 创建 axios 实例
 const service = axios.create({
-  baseURL: process.env.VUE_APP_API_BASE_URL, // api base_url
+  baseURL: getBaseURL(), // api base_url
   timeout: 6000 // 请求超时时间
 })
-
 const err = (error) => {
   if (error.response) {
     const data = error.response.data
@@ -40,6 +40,7 @@ const err = (error) => {
 
 // request interceptor
 service.interceptors.request.use(config => {
+  console.log(config)
   const token = Vue.ls.get(ACCESS_TOKEN)
   if (token) {
     config.headers['Access-Token'] = token // 让每个请求携带自定义 token 请根据实际情况自行修改
@@ -49,6 +50,7 @@ service.interceptors.request.use(config => {
 
 // response interceptor
 service.interceptors.response.use((response) => {
+  console.log(response.data)
   return response.data
 }, err)
 
