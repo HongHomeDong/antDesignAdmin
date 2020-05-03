@@ -53,7 +53,7 @@
           />
         </a-form-model-item>
         <a-form-model-item label="城市" prop="city">
-          <a-select style="width: 100%">
+          <a-select style="width: 100%" v-model="detailData.city">
             <a-select-option :value="item.city" :key="item.city" v-for="item in cityList">
               {{item.city}}
             </a-select-option>
@@ -129,7 +129,13 @@
       cityListApi () {
         cityList()
           .then(res => {
-            this.cityList = res
+            if (res.code === 0) {
+              this.cityList = res.data.list.map((item) => {
+                return {
+                  city: item
+                }
+              })
+            }
           })
       },
       pageChange (page, limit) {
@@ -188,8 +194,8 @@
           .then(res => {
             console.log(res)
             this.state.searchLoading = false
-            const { data, total } = res
-            this.data = data
+            const { data: { list, total } } = res
+            this.data = list
             this.pagination.total = Number(total)
           })
           .catch(error => {

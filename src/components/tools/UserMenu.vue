@@ -113,11 +113,6 @@ export default {
         passwordLevelChecked: false,
         percent: 10,
         progressColor: '#FF0000'
-      },
-      rules: {
-        oldpassword: [
-          { required: true, trigger: 'blur', message: '收卡人不能为空' }
-        ]
       }
     }
   },
@@ -140,7 +135,8 @@ export default {
       this.state.submitLoading = true
       validateFields({ force: true }, (err, values) => {
         if (!err) {
-          modifyPassword()
+          const { oldpassword, newpassword } = this.form.getFieldsValue()
+          modifyPassword({ oldpassword, newpassword })
             .then(res => {
               state.passwordLevelChecked = false
               state.submitLoading = false

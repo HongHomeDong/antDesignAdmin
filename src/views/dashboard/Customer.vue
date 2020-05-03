@@ -103,6 +103,13 @@
             </a-select-option>
           </a-select>
         </a-form-model-item>
+        <a-form-model-item label="城市" prop="city">
+          <a-select style="width: 100%" placeholder="请选择" v-model="detailData.city">
+            <a-select-option :value="item.id" :key="item.id" v-for="item in options.bankList">
+              {{ item.bank }}
+            </a-select-option>
+          </a-select>
+        </a-form-model-item>
         <a-form-model-item label="银行卡号" prop="bankcardNo">
           <a-input
             v-model="detailData.bankcardNo"
@@ -164,6 +171,7 @@
     { title: '身份证号', width: 200, dataIndex: 'idcardNo', key: 'idcardNo', fixed: 'left' },
     { title: '预留手机号', dataIndex: 'phone', key: 'phone', width: 150 },
     { title: '发卡银行', dataIndex: 'bankName', key: 'bankName', width: 150 },
+    { title: '城市', dataIndex: 'city', key: 'city', width: 150 },
     { title: '卡号', dataIndex: 'bankcardNo', key: 'bankcardNo', width: 200 },
     { title: '交卡日期', dataIndex: 'updateAt', key: 'updateAt', width: 220 },
     { title: '交卡时总额度', dataIndex: 'beginTotalLimit', key: 'beginTotalLimit', width: 150 },
@@ -361,14 +369,14 @@
       getBankListApi () {
         getBankList()
           .then(res => {
-            this.options.bankList = res.data
+            this.options.bankList = res.data.list
           }).catch(() => {
         })
       },
       receivePersonListApi () {
         receivePersonList()
           .then(res => {
-            this.options.receivePersonList = res.data
+            this.options.receivePersonList = res.data.list
           }).catch(() => {
         })
       },
@@ -379,9 +387,11 @@
           .then(res => {
             console.log(res)
             this.state.searchLoading = false
-            const { data, total } = res
-            this.data = data
-            this.pagination.total = Number(total)
+            const { data, code } = res
+            if (code === 0) {
+              this.data = data.list
+              this.pagination.total = Number(data.total)
+            }
           })
           .catch(error => {
             this.state.searchLoading = false

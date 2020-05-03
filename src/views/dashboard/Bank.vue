@@ -170,8 +170,8 @@
           .then(res => {
             console.log(res)
             this.state.searchLoading = false
-            const { data, total } = res
-            this.data = data
+            const { data: { total, list } } = res
+            this.data = list
             this.pagination.total = Number(total)
           })
           .catch(error => {

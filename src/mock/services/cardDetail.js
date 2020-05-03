@@ -3,127 +3,166 @@ import { builder } from '../util'
 
 const detail = (options) => {
   return builder({
-    'page': '1',
-    'total': '245',
-    'data': [
-      {
-              'id': '1',
-    'name': '张三',
-    'idcardNo': '51072219991201',
-    'phone': '18810981234',
-    'bankName': '光大银行',
-    'bankcardNo': '123456789012243',
-    'beginDate': '2020-03-04',
-    'beginTotalLimit': '25000.55',
-    'beginAvailableLimit': '12.05',
-    'instalmentFee': '223.89',
-    'issuingPerson': '王老五',
-    'updateAt': '2020-04-06 15:37:56'
-},
-  {
-  'id': '2',
-    'name': '张三',
-    'idcardNo': '51072219991201',
-    'phone': '18810981234',
-    'bankName': '光大银行',
-    'bankcardNo': '123456789012243',
-    'beginDate': '2020-03-04',
-    'beginTotalLimit': '25000.55',
-    'beginAvailableLimit': '12.05',
-    'instalmentFee': '223.89',
-    'issuingPerson': '王老五',
-    'updateAt': '2020-04-06 15:37:56'
-  },
-  {
-  'id': '3',
-    'name': '张三',
-    'idcardNo': '51072219991201',
-    'phone': '18810981234',
-    'bankName': '光大银行',
-    'bankcardNo': '123456789012243',
-    'beginDate': '2020-03-04',
-    'beginTotalLimit': '25000.55',
-    'beginAvailableLimit': '12.05',
-    'instalmentFee': '223.89',
-    'issuingPerson': '王老五',
-    'updateAt': '2020-04-06 15:37:56'
-  }
-]
-}, '', 200, { 'Custom-Header': Mock.mock('@guid') })
+    'code': 0,
+    'data': {
+      'list': [
+        {
+          'bankName': 'string',
+          'bankcardNo': 'string',
+          'beginAvailableLimit': 'string',
+          'beginDate': 'string',
+          'beginTotalLimit': 'string',
+          'city': 'string',
+          'id': 0,
+          'idcardNo': 'string',
+          'instalmentFee': 'string',
+          'issuingPerson': 'string',
+          'name': 'string',
+          'phone': 'string',
+          'updateAt': 'string'
+        }
+      ],
+      'total': 0
+    },
+    'msg': 'string'
+  }, '', 200, { 'Custom-Header': Mock.mock('@guid') })
 }
 
 const detailAdd = (options) => {
-  return builder({ }
+  return builder({
+      'code': 0,
+      'data': {},
+      'msg': 'string'
+    }
     , '', 200, { 'Custom-Header': Mock.mock('@guid') })
 }
 
 const detailDelete = (options) => {
-  return builder({ }
+  return builder({
+      'code': 0,
+      'data': {},
+      'msg': 'string'
+    }
     , '', 200, { 'Custom-Header': Mock.mock('@guid') })
 }
 
 const detailEdit = (options) => {
-  return builder({ }
+  return builder({
+      'code': 0,
+      'data': {},
+      'msg': 'string'
+    }
     , '', 200, { 'Custom-Header': Mock.mock('@guid') })
 }
 
 const bank = (options) => {
   return builder({
+    'code': 0,
     'data': [
       {
-        'id': '1',
-        'bank': '⺠民⽣生银⾏行行' },
-      {
-        'id': '2',
-        'bank': '中国银⾏行行' }
-    ] }, '', 200, { 'Custom-Header': Mock.mock('@guid') })
+        'bank': 'string',
+        'id': 0
+      }
+    ],
+    'msg': 'string'
+  }, '', 200, { 'Custom-Header': Mock.mock('@guid') })
 }
 
 const addBank = (options) => {
   if (!options.bankName) {
-    return builder({ }, '请选择银行', 401)
+    return builder({
+      'code': 0,
+      'data': {},
+      'msg': 'string'
+    }, '请选择银行', 401)
   }
   return builder({ }, '', 200, { 'Custom-Header': Mock.mock('@guid') })
 }
 
 const deleteBank = (options) => {
   if (!options.id) {
-    return builder({ }, 'id不能为空', 401)
+    return builder({
+      'code': 1,
+      'data': {},
+      'msg': 'string'
+    }, 'id不能为空', 401)
   }
-  return builder({ }, '', 200, { 'Custom-Header': Mock.mock('@guid') })
+  return builder({
+    'code': 0,
+    'data': {},
+    'msg': 'string'
+  }, '', 200, { 'Custom-Header': Mock.mock('@guid') })
 }
 
 const receivePersonList = (options) => {
-  return builder({ 'data': [ { 'id': '1', 'person': 'ୟӣ' }, { 'id': '2', 'person': 'ࢥ๫' }, { 'id': '3', 'person': 'ሴᘌԲ' } ] }
+  return builder({
+      'code': 0,
+      'data': [
+        {
+          'id': 0,
+          'person': 'string'
+        }
+      ],
+      'msg': 'string'
+    }
     , '', 200, { 'Custom-Header': Mock.mock('@guid') })
 }
 
 const addReceivePerson = (options) => {
   if (!options.person) {
-    return builder({ }, '不能为空', 401)
+    return builder({
+      'code': 1,
+      'data': {},
+      'msg': 'string'
+    }, '不能为空', 401)
   }
-  return builder({ }
+  return builder({
+      'code': 0,
+      'data': {},
+      'msg': 'string'
+    }
     , '', 200, { 'Custom-Header': Mock.mock('@guid') })
 }
 
 const deleteReceivePerson = (options) => {
   if (!options.id) {
-    return builder({ }, '不能为空', 401)
+    return builder({
+      'code': 1,
+      'data': {},
+      'msg': 'string'
+    }, '不能为空', 401)
   }
-  return builder({ }
+  return builder({
+      'code': 0,
+      'data': {},
+      'msg': 'string'
+    }
     , '', 200, { 'Custom-Header': Mock.mock('@guid') })
 }
 
 const personCityList = (options) => {
   return builder({
-      'data': [
-        { 'id': '1', 'person': 'ୟӣ', 'city': 'ᖍᴡ૱' }, { 'id': '2', 'person': 'ୟӣ', 'city': '౮᮷૱' }, { 'id': '3', 'person': 'ሴᘌԲ', 'city': 'ಅํ' } ] }
+      'data': {
+        'code': 0,
+        'data': [
+          {
+            'city': 'string',
+            'id': 0,
+            'person': 'string'
+          }
+        ],
+        'msg': 'string'
+      } }
     , '', 200, { 'Custom-Header': Mock.mock('@guid') })
 }
 
 const addPersonCity = (options) => {
   if (!options.person || !options.city) {
-    return builder({ }, '不能为空', 401)
+    return builder({
+      'code': 0,
+      'data': {},
+      'msg': 'string'
+    }, '不能为空', 401)
   }
   return builder({ }
     , '', 200, { 'Custom-Header': Mock.mock('@guid') })
@@ -131,48 +170,103 @@ const addPersonCity = (options) => {
 
 const deletePersonCity = (options) => {
   if (!options.id) {
-    return builder({ }, '不能为空', 401)
+    return builder({
+      'code': 0,
+      'data': {},
+      'msg': 'string'
+    }, '不能为空', 401)
   }
   return builder({ }
     , '', 200, { 'Custom-Header': Mock.mock('@guid') })
 }
 
 const cityList = (options) => {
-  return builder([{ 'caty': 'ᖍᴡ૱' }, { 'city': '౮᮷૱' }, { 'city': 'ᛔᨯ૱' }]
+  return builder({
+      'code': 0,
+      'data': [
+        'string'
+      ],
+      'msg': 'string'
+    }
     , '', 200, { 'Custom-Header': Mock.mock('@guid') })
 }
 
 const swipeCardRecord = (options) => {
-  return builder({ 'page': '1',
-      'total': '245',
-      'data': [
-        { 'id': '222', 'date': '2020-03-04', 'amount': '33229.55', 'merchant': 'ᯩኞ໼ྒज़ମ' },
-        { 'id': '221s', 'date': '2020-03-04', 'amount': '33229.55', 'merchant': 'ᯩኞ໼ྒज़ମ' }
-      ]
-    }, '', 200, { 'Custom-Header': Mock.mock('@guid') })
+  return builder({
+    'code': 0,
+    'data': {
+      'list': [
+        {
+          'amount': 'string',
+          'date': 'string',
+          'id': 0,
+          'merchant': 'string'
+        }
+      ],
+      'total': 0
+    },
+    'msg': 'string'
+  }, '', 200, { 'Custom-Header': Mock.mock('@guid') })
 }
 
 const addSwipeCardRecord = (options) => {
-  return builder({}, '', 200, { 'Custom-Header': Mock.mock('@guid') })
+  return builder({
+    'code': 0,
+    'data': {},
+    'msg': 'string'
+  }, '', 200, { 'Custom-Header': Mock.mock('@guid') })
 }
 const editSwipeCardRecord = (options) => {
-  return builder({}, '', 200, { 'Custom-Header': Mock.mock('@guid') })
+  return builder({
+    'code': 0,
+    'data': {},
+    'msg': 'string'
+  }, '', 200, { 'Custom-Header': Mock.mock('@guid') })
 }
 const deleteSwipeCardRecord = (options) => {
-  return builder({ }, 200, { 'Custom-Header': Mock.mock('@guid') })
+  return builder({
+    'code': 0,
+    'data': {},
+    'msg': 'string'
+  }, 200, { 'Custom-Header': Mock.mock('@guid') })
 }
 
 const repaymentRecord = (options) => {
-  return builder({ 'page': '1', 'total': '245', 'data': [ { 'id': '111', 'date': '2020-03-04', 'amount': '33229.55' }, { 'id': '112', 'date': '2020-03-05', 'amount': '33229.55' }, { 'id': '113', 'date': '2020-03-06', 'amount': '33229.55' } ] }, '', 200, { 'Custom-Header': Mock.mock('@guid') })
+  return builder({
+    'code': 0,
+    'data': {
+      'list': [
+        {
+          'amount': 'string',
+          'date': 'string',
+          'id': 0
+        }
+      ],
+      'total': 0
+    },
+    'msg': 'string'
+  }, '', 200, { 'Custom-Header': Mock.mock('@guid') })
 }
 const addRepaymentRecord = (options) => {
-  return builder({}, '', 200, { 'Custom-Header': Mock.mock('@guid') })
+  return builder({
+    'code': 0,
+    'data': {},
+    'msg': 'string'
+  }, '', 200, { 'Custom-Header': Mock.mock('@guid') })
 }
 const editRepaymentRecord = (options) => {
-  return builder({}, '', 200, { 'Custom-Header': Mock.mock('@guid') })
+  return builder({
+    'code': 0,
+    'data': {},
+    'msg': 'string'
+  }, '', 200, { 'Custom-Header': Mock.mock('@guid') })
 }
 const deleteRepaymentRecord = (options) => {
-  return builder({ }, 200, { 'Custom-Header': Mock.mock('@guid') })
+  return builder({
+    'code': 0,
+    'data': {},
+    'msg': 'string'
+  }, 200, { 'Custom-Header': Mock.mock('@guid') })
 }
 // 客户记录
 Mock.mock(/\/v1\/customer\/card\/detail/, 'post', detail)

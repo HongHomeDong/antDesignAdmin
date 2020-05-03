@@ -38,10 +38,10 @@ const user = {
       return new Promise((resolve, reject) => {
         login(userInfo).then(response => {
           const result = response
-          Vue.ls.set(ACCESS_TOKEN, result.token, 7 * 24 * 60 * 60 * 1000)
-          commit('SET_TOKEN', result.token)
-          Vue.ls.set(ACCESS_NAME, result.name, 7 * 24 * 60 * 60 * 1000)
-          commit('SET_NAME', { name: result.name, welcome: welcome() })
+          Vue.ls.set(ACCESS_TOKEN, result.token || 'qwe', 7 * 24 * 60 * 60 * 1000)
+          commit('SET_TOKEN', result.token || 'qwe')
+          Vue.ls.set(ACCESS_NAME, result.name || 'qwe', 7 * 24 * 60 * 60 * 1000)
+          commit('SET_NAME', { name: result.name || 'qwe', welcome: welcome() })
           resolve()
         }).catch(error => {
           reject(error)

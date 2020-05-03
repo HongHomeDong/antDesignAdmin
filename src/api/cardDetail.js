@@ -30,8 +30,8 @@ export function addCardDetail (parameter) {
 export function deleteCardDetail (parameter) {
   return axios({
     url: '/v1/customer/card/detail/delete',
-    method: 'post',
-    data: parameter
+    method: 'delete',
+    params: parameter
   })
 }
 
@@ -61,9 +61,9 @@ export function addBank (parameter) {
 
 export function deleteBank (parameter) {
   return axios({
-    url: '/v1/bank/add',
-    method: 'post',
-    data: parameter
+    url: '/v1/bank/delete',
+    method: 'delete',
+    params: parameter
   })
 }
 
@@ -86,8 +86,8 @@ export function addReceivePerson (parameter) {
 export function deleteReceivePerson (parameter) {
   return axios({
     url: '/v1/receive_person/delete',
-    method: 'post',
-    data: parameter
+    method: 'delete',
+    params: parameter
   })
 }
 
@@ -110,8 +110,8 @@ export function addPersonCity (parameter) {
 export function deletePersonCity (parameter) {
   return axios({
     url: '/v1/person_city/delete',
-    method: 'post',
-    data: parameter
+    method: 'delete',
+    params: parameter
   })
 }
 
@@ -150,8 +150,8 @@ export function addSwipeCardRecord (parameter) {
 export function deleteSwipeCardRecord (parameter) {
   return axios({
     url: '/v1/customer/card/detail/swipe_card_record/delete',
-    method: 'post',
-    data: parameter
+    method: 'delete',
+    params: parameter
   })
 }
 
@@ -174,8 +174,8 @@ export function addRepaymentRecord (parameter) {
 export function deleteRepaymentRecord (parameter) {
   return axios({
     url: '/v1/customer/card/detail/repayment_record/delete',
-    method: 'post',
-    data: parameter
+    method: 'delete',
+    params: parameter
   })
 }
 
