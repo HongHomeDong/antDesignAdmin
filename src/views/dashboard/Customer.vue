@@ -105,9 +105,11 @@
         </a-form-model-item>
         <a-form-model-item label="城市" prop="city">
           <a-select style="width: 100%" placeholder="请选择" v-model="detailData.city">
-            <a-select-option :value="item.id" :key="item.id" v-for="item in options.bankList">
-              {{ item.bank }}
-            </a-select-option>
+            <a-select style="width: 100%" v-model="detailData.city">
+              <a-select-option :value="item.city" :key="item.city" v-for="item in cityList">
+                {{item.city}}
+              </a-select-option>
+            </a-select>
           </a-select>
         </a-form-model-item>
         <a-form-model-item label="银行卡号" prop="bankcardNo">
@@ -163,7 +165,8 @@
     receivePersonList,
     addCardDetail,
     deleteCardDetail,
-    editCardDetail
+    editCardDetail,
+    cityList
   } from '@/api/cardDetail'
 
   const columns = [
@@ -229,7 +232,7 @@
           bankName: undefined,
           issuingPerson: undefined
         },
-
+        cityList: [],
         detailData: {
           'id': '',
           'name': '',
@@ -279,6 +282,9 @@
           ],
           issuingPerson: [
             { required: true, trigger: 'blur', message: '收卡人不能为空' }
+          ],
+          city: [
+            { required: true, trigger: 'blur', message: '城市不能为空' }
           ]
         }
       }
@@ -322,6 +328,18 @@
       },
       rowCustom (row) {
         this.$router.push({ name: 'cardDetail', query: { id: row.id } })
+      },
+      cityListApi () {
+        cityList()
+          .then(res => {
+            if (res.code === 0) {
+              this.cityList = res.data.list.map((item) => {
+                return {
+                  city: item
+                }
+              })
+            }
+          })
       },
       cancel () {
         this.addDetailVisible = false
