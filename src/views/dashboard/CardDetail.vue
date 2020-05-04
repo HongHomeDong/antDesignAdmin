@@ -19,6 +19,9 @@
           rowKey="id"
           :loading="state.searchLoading"
           :pagination="false">
+          <span slot="index" slot-scope="text, record, index">
+          {{index + 1}}
+        </span>
           <a slot="edit" slot-scope="record" @click="swipeRowEdit(record)">
             编辑
           </a>
@@ -50,6 +53,9 @@
           rowKey="id"
           :loading="state.searchLoading"
           :pagination="false">
+          <span slot="index" slot-scope="text, record, index">
+          {{index + 1}}
+        </span>
           <a slot="edit" slot-scope="record" @click="repaymentRowEdit(record)">
             编辑
           </a>
@@ -119,6 +125,11 @@
   } from '@/api/cardDetail'
 
   const swipeColumns = [
+    {
+      title: '序号',
+      width: 80,
+      scopedSlots: { customRender: 'index' }
+    },
     { title: '时间', width: 200, dataIndex: 'date', key: 'date', fixed: 'left' },
     { title: '商店', width: 500, dataIndex: 'merchant', key: 'merchant', fixed: 'left' },
     { title: '刷卡金额', dataIndex: 'amount', key: 'amount', width: 350 },
@@ -139,6 +150,11 @@
   ]
 
   const repaymentColumns = [
+    {
+      title: '序号',
+      width: 80,
+      scopedSlots: { customRender: 'index' }
+    },
     { title: '时间', width: 400, dataIndex: 'date', key: 'date', fixed: 'left' },
     { title: '刷卡金额', dataIndex: 'amount', key: 'amount', width: 550 },
     {

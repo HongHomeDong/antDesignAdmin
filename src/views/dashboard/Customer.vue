@@ -42,6 +42,9 @@
         :loading="state.searchLoading"
         :scroll="{ x: 1600, y: scrollY }"
         :pagination="false">
+        <span slot="index" slot-scope="text, record, index">
+          {{index + 1}}
+        </span>
         <a slot="edit" slot-scope="record" @click="rowEdit(record)">
           编辑
         </a>
@@ -166,10 +169,15 @@
     addCardDetail,
     deleteCardDetail,
     editCardDetail,
-    cityList
+    cityPermissionList
   } from '@/api/cardDetail'
 
   const columns = [
+    {
+      title: '序号',
+      width: 80,
+      scopedSlots: { customRender: 'index' }
+    },
     { title: '客户姓名', width: 100, dataIndex: 'name', key: 'name', fixed: 'left' },
     { title: '身份证号', width: 200, dataIndex: 'idcardNo', key: 'idcardNo', fixed: 'left' },
     { title: '预留手机号', dataIndex: 'phone', key: 'phone', width: 150 },
@@ -257,16 +265,16 @@
             { required: true, trigger: 'blur', message: '名称不能为空' }
           ],
           idcardNo: [
-            { required: true, trigger: 'blur', message: '身份证号不能为空' }
+            { required: true, trigger: 'blur', message: '请输入正确的身份证号', pattern: /^(([1][1-5])|([2][1-3])|([3][1-7])|([4][1-6])|([5][0-4])|([6][1-5])|([7][1])|([8][1-2]))\d{4}(([1][9]\d{2})|([2]\d{3}))(([0][1-9])|([1][0-2]))(([0][1-9])|([1-2][0-9])|([3][0-1]))\d{3}[0-9xX]$/ }
           ],
           phone: [
-            { required: true, trigger: 'blur', message: '手机号不能为空' }
+            { required: true, trigger: 'blur', message: '请输入正确的手机号', pattern: /^1[3456789]\d{9}$/ }
           ],
           bankName: [
             { required: true, trigger: 'change', message: '请选择银行' }
           ],
           bankcardNo: [
-            { required: true, trigger: 'blur', message: '请输入银行卡号' }
+            { required: true, trigger: 'blur', message: '请输入正确的银行卡号', pattern: /[1-9]\d{12,18}/ }
           ],
           beginDate: [
             { required: true, trigger: 'change', message: '请选择时间' }
@@ -312,6 +320,7 @@
       this.getCardDetailApi()
       this.getBankListApi()
       this.receivePersonListApi()
+      this.cityListApi()
     },
     methods: {
       pageChange (page, limit) {
@@ -330,7 +339,7 @@
         this.$router.push({ name: 'cardDetail', query: { id: row.id } })
       },
       cityListApi () {
-        cityList()
+        cityPermissionList()
           .then(res => {
             if (res.code === 0) {
               this.cityList = res.data.list.map((item) => {

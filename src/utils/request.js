@@ -17,14 +17,14 @@ const err = (error) => {
     const token = Vue.ls.get(ACCESS_TOKEN)
     if (error.response.status === 403) {
       notification.error({
-        message: 'Forbidden',
+        message: error.response.status,
         description: data.message
       })
     }
     if (error.response.status === 401 && !(data.result && data.result.isLogin)) {
       notification.error({
-        message: 'Unauthorized',
-        description: 'Authorization verification failed'
+        message: error.response.status,
+        description: data.message
       })
       if (token) {
         store.dispatch('Logout').then(() => {
@@ -51,7 +51,15 @@ service.interceptors.request.use(config => {
 // response interceptor
 service.interceptors.response.use((response) => {
   console.log(response.data)
-  return response.data
+  const { data } = response
+  if (response.data.code === 0) {
+    return data
+  } else {
+    notification.error({
+      message: data.code,
+      description: data.mes
+    })
+  }
 }, err)
 
 const installer = {

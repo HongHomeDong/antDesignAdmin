@@ -13,6 +13,9 @@
         :loading="state.searchLoading"
         :scroll="{ y: scrollY }"
         :pagination="false">
+        <span slot="index" slot-scope="text, record, index">
+          {{index + 1}}
+        </span>
         <a style="color: #f5222d;" slot="delete" slot-scope="record" @click="rowDelete(record)">
           删除
         </a>
@@ -65,6 +68,11 @@
   } from '@/api/cardDetail'
 
   const columns = [
+    {
+      title: '序号',
+      width: 80,
+      scopedSlots: { customRender: 'index' }
+    },
     { title: '收卡人', dataIndex: 'person', key: 'person', width: 700 },
     {
       title: '删除',

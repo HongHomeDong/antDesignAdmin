@@ -99,6 +99,14 @@ export function personCityList (parameter) {
   })
 }
 
+export function cityPermissionList (parameter) {
+  return axios({
+    url: '/v1/person_city/list/permission',
+    method: 'get',
+    params: parameter
+  })
+}
+
 export function addPersonCity (parameter) {
   return axios({
     url: '/v1/person_city/add',
