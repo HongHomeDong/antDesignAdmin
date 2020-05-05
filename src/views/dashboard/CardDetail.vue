@@ -412,7 +412,6 @@
         const form = this.tagType === '1' ? 'swipeRules' : 'ruleForm'
         this.$refs[form].validate(valid => {
           console.log(this.tagType)
-          debugger
           if (valid) {
             let submitApi = null
             let data = null

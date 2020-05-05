@@ -5,7 +5,6 @@ const createThemeColorReplacerPlugin = require('./config/plugin.config')
 function resolve (dir) {
   return path.join(__dirname, dir)
 }
-const baseUrl = '/'
 
 const isProd = process.env.NODE_ENV === 'production'
 
@@ -29,7 +28,6 @@ const assetsCDN = {
 
 // vue.config.js
 const vueConfig = {
-  publicPath: baseUrl,
   configureWebpack: {
     // webpack plugins
     plugins: [
