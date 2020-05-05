@@ -101,14 +101,14 @@
         </a-form-model-item>
         <a-form-model-item label="银行" prop="bankName">
           <a-select style="width: 100%" placeholder="请选择" v-model="detailData.bankName">
-            <a-select-option :value="item.id" :key="item.id" v-for="item in options.bankList">
+            <a-select-option :value="item.bank" :key="item.id" v-for="item in options.bankList">
               {{ item.bank }}
             </a-select-option>
           </a-select>
         </a-form-model-item>
         <a-form-model-item label="收卡人" prop="issuingPerson">
           <a-select style="width: 100%" placeholder="收卡人" v-model="detailData.issuingPerson">
-            <a-select-option :value="item.id" :key="item.id" v-for="item in options.receivePersonList">
+            <a-select-option :value="item.person" :key="item.id" v-for="item in options.receivePersonList">
               {{ item.person }}
             </a-select-option>
           </a-select>
