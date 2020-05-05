@@ -9,7 +9,7 @@ import { getBaseURL } from '@/utils/util'
 // 创建 axios 实例
 const service = axios.create({
   baseURL: getBaseURL(), // api base_url
-  timeout: 6000 // 请求超时时间
+  timeout: 30000 // 请求超时时间
 })
 const err = (error) => {
   if (error.response) {
@@ -34,6 +34,10 @@ const err = (error) => {
         })
       }
     }
+    notification.error({
+      message: error.response.status,
+      description: data.message || '请求出现错误，请稍后再试'
+    })
   }
   return Promise.reject(error)
 }

@@ -92,7 +92,7 @@ const vueConfig = {
     // If you want to turn on the proxy, please remove the mockjs /src/main.jsL11
     proxy: {
       '/api': {
-        target: 'http://za6sy9.natappfree.cc',
+        target: 'http://mkc2s9.natappfree.cc/',
         ws: false,
         changeOrigin: true,
         pathRewrite: { '^/api': '' }

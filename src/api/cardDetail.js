@@ -37,7 +37,7 @@ export function deleteCardDetail (parameter) {
 
 export function editCardDetail (parameter) {
   return axios({
-    url: '/v1/customer/card/detail/editCardDetail',
+    url: '/v1/customer/card/detail/edit',
     method: 'post',
     data: parameter
   })

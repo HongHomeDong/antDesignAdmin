@@ -191,6 +191,17 @@ const cityList = (options) => {
     , '', 200, { 'Custom-Header': Mock.mock('@guid') })
 }
 
+const permissionCityList = (options) => {
+  return builder({
+      'code': 0,
+      'data': [
+        'string'
+      ],
+      'msg': 'string'
+    }
+    , '', 200, { 'Custom-Header': Mock.mock('@guid') })
+}
+
 const swipeCardRecord = (options) => {
   return builder({
     'code': 0,
@@ -298,6 +309,8 @@ Mock.mock(/\/v1\/receive_person\/delete/, 'post', deleteReceivePerson)
 
 // 人员城市
 Mock.mock(/\/v1\/person_city\/list/, 'get', personCityList)
+Mock.mock(/\/v1\/person_city\/list\/permission/, 'get', permissionCityList)
+
 Mock.mock(/\/v1\/person_city\/add/, 'post', addPersonCity)
 Mock.mock(/\/v1\/person_city\/delete/, 'post', deletePersonCity)
 

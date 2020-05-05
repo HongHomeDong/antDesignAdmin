@@ -10,14 +10,14 @@
         </a-col>
         <a-col :span="5" >
           <a-select style="width: 100%" placeholder="银行" v-model="searchData.bankName">
-            <a-select-option :value="item.id" :key="item.id" v-for="item in options.bankList">
+            <a-select-option :value="item.bank" :key="item.id" v-for="item in options.bankList">
               {{ item.bank }}
             </a-select-option>
           </a-select>
         </a-col>
         <a-col :span="5" >
           <a-select style="width: 100%" placeholder="收卡人" v-model="searchData.issuingPerson">
-            <a-select-option :value="item.id" :key="item.id" v-for="item in options.receivePersonList">
+            <a-select-option :value="item.person" :key="item.id" v-for="item in options.receivePersonList">
               {{ item.person }}
             </a-select-option>
           </a-select>
@@ -106,13 +106,18 @@
             </a-select-option>
           </a-select>
         </a-form-model-item>
+        <a-form-model-item label="收卡人" prop="issuingPerson">
+          <a-select style="width: 100%" placeholder="收卡人" v-model="detailData.issuingPerson">
+            <a-select-option :value="item.id" :key="item.id" v-for="item in options.receivePersonList">
+              {{ item.person }}
+            </a-select-option>
+          </a-select>
+        </a-form-model-item>
         <a-form-model-item label="城市" prop="city">
           <a-select style="width: 100%" placeholder="请选择" v-model="detailData.city">
-            <a-select style="width: 100%" v-model="detailData.city">
-              <a-select-option :value="item.city" :key="item.city" v-for="item in cityList">
-                {{item.city}}
-              </a-select-option>
-            </a-select>
+            <a-select-option :value="item.city" :key="item.city" v-for="item in cityList">
+              {{item.city}}
+            </a-select-option>
           </a-select>
         </a-form-model-item>
         <a-form-model-item label="银行卡号" prop="bankcardNo">
@@ -151,11 +156,6 @@
             :parser="value => value.replace(/\￥\s?|(,*)/g, '')"
           />
         </a-form-model-item>
-        <a-form-model-item label="收卡人" prop="issuingPerson">
-          <a-input
-            v-model="detailData.issuingPerson"
-          />
-        </a-form-model-item>
       </a-form-model>
     </a-modal>
   </div>
@@ -184,7 +184,7 @@
     { title: '发卡银行', dataIndex: 'bankName', key: 'bankName', width: 150 },
     { title: '城市', dataIndex: 'city', key: 'city', width: 150 },
     { title: '卡号', dataIndex: 'bankcardNo', key: 'bankcardNo', width: 200 },
-    { title: '交卡日期', dataIndex: 'updateAt', key: 'updateAt', width: 220 },
+    { title: '交卡日期', dataIndex: 'beginDate', key: 'beginDate', width: 220 },
     { title: '交卡时总额度', dataIndex: 'beginTotalLimit', key: 'beginTotalLimit', width: 150 },
     { title: '交卡时可用额度', dataIndex: 'beginAvailableLimit', key: 'beginAvailableLimit', width: 150 },
     { title: '分期费用', dataIndex: 'instalmentFee', key: 'instalmentFee', width: 150 },
@@ -252,6 +252,7 @@
           'beginTotalLimit': '',
           'beginAvailableLimit': '',
           'instalmentFee': '',
+          'city': '',
           'issuingPerson': ''
         },
 
@@ -342,7 +343,7 @@
         cityPermissionList()
           .then(res => {
             if (res.code === 0) {
-              this.cityList = res.data.list.map((item) => {
+              this.cityList = res.data.map((item) => {
                 return {
                   city: item
                 }
@@ -360,6 +361,7 @@
           'bankName': '',
           'bankcardNo': '',
           'beginDate': null,
+          'city': '',
           'beginTotalLimit': '',
           'beginAvailableLimit': '',
           'instalmentFee': '',
@@ -444,6 +446,7 @@
       rowEdit (e, value) {
         console.log(e, value)
         this.detailData = { ...e }
+        this.detailData.beginDate = this.$moment(e.beginDate)
         this.addDetailVisible = true
       }
     }

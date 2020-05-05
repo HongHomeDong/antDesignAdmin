@@ -70,12 +70,53 @@
           showSizeChanger
           :page-size="repaymentPagination.limit"
           @change="repaymentPageChange"
-          @showSizeChange="repaymentPizeChange"
+          @showSizeChange="repaymentSizeChange"
           showQuickJumper/>
       </div>
     </template>
     <a-modal
-      :title="recordFromData.id ? '编辑刷卡记录' : '新增刷卡记录'"
+      :title="swipeRecordFromData.id ? '编辑刷卡记录' : '新增刷卡记录'"
+      :visible="swipeRecordVisible"
+      @cancel="cancel"
+      :confirmLoading="state.submitLoading"
+      :maskClosable="false"
+      :width="700"
+      :confirm-loading="state.recordLoading"
+      @ok="handleSubmit"
+    >
+      <a-form-model
+        ref="swipeRules"
+        :model="swipeRecordFromData"
+        :rules="swipeRules"
+        :label-col="labelCol"
+        :wrapper-col="wrapperCol"
+      >
+        <a-form-model-item label="刷卡商户" prop="merchant">
+          <a-input
+            v-model="swipeRecordFromData.merchant"
+          />
+        </a-form-model-item>
+        <a-form-model-item label="刷卡金额" prop="amount">
+          <a-input-number
+            v-model="swipeRecordFromData.amount"
+            :formatter="value => `￥ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
+            :parser="value => value.replace(/\￥\s?|(,*)/g, '')"
+          />
+        </a-form-model-item>
+        <a-form-model-item label="刷卡时间" required prop="date">
+          <a-date-picker
+            v-model="swipeRecordFromData.date"
+            :default-value="swipeRecordFromData.date && $moment(swipeRecordFromData.date, 'YYYY-MM-DD')"
+            type="date"
+            placeholder="选择时间"
+            style="width: 100%;"
+          />
+        </a-form-model-item>
+      </a-form-model>
+    </a-modal>
+
+    <a-modal
+      :title="recordFromData.id ? '编辑还款记录' : '新增还款记录'"
       :visible="recordVisible"
       @cancel="cancel"
       :confirmLoading="state.submitLoading"
@@ -91,14 +132,14 @@
         :label-col="labelCol"
         :wrapper-col="wrapperCol"
       >
-        <a-form-model-item label="刷卡金额" prop="amount">
+        <a-form-model-item label="还款金额" prop="amount">
           <a-input-number
             v-model="recordFromData.amount"
             :formatter="value => `￥ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
             :parser="value => value.replace(/\￥\s?|(,*)/g, '')"
           />
         </a-form-model-item>
-        <a-form-model-item label="刷卡时间" required prop="date">
+        <a-form-model-item label="还款时间" required prop="date">
           <a-date-picker
             v-model="recordFromData.date"
             :default-value="recordFromData.date && $moment(recordFromData.date, 'YYYY-MM-DD')"
@@ -131,7 +172,7 @@
       scopedSlots: { customRender: 'index' }
     },
     { title: '时间', width: 200, dataIndex: 'date', key: 'date', fixed: 'left' },
-    { title: '商店', width: 500, dataIndex: 'merchant', key: 'merchant', fixed: 'left' },
+    { title: '刷卡商户', width: 500, dataIndex: 'merchant', key: 'merchant', fixed: 'left' },
     { title: '刷卡金额', dataIndex: 'amount', key: 'amount', width: 350 },
     {
       title: '删除',
@@ -191,7 +232,7 @@
           total: 0
         },
         recordVisible: false,
-        repaymentVisible: false,
+        swipeRecordVisible: false,
         swipeColumns,
         repaymentColumns,
         swipeData: [],
@@ -202,6 +243,20 @@
           ],
           date: [
             { required: true, trigger: 'change', message: '请选择时间' }
+          ],
+          merchant: [
+            { required: true, trigger: 'change', message: '请输入商户' }
+          ]
+        },
+        swipeRules: {
+          amount: [
+            { required: true, trigger: 'blur', message: '金额不能为空' }
+          ],
+          date: [
+            { required: true, trigger: 'change', message: '请选择时间' }
+          ],
+          merchant: [
+            { required: true, trigger: 'change', message: '请输入商户' }
           ]
         },
 
@@ -214,7 +269,15 @@
         recordFromData: {
           id: '',
           date: null,
-          amount: ''
+          amount: '',
+          customerId: ''
+        },
+        swipeRecordFromData: {
+          id: '',
+          date: null,
+          amount: '',
+          merchant: '',
+          customerId: ''
         }
       }
     },
@@ -225,6 +288,7 @@
       repaymentRowEdit (item) {
         this.recordVisible = true
         this.recordFromData = { ...item }
+        this.recordFromData.date = this.$moment(this.recordFromData.date)
       },
       repaymentRowDelete (item) {
         this.$confirm({
@@ -274,8 +338,8 @@
         }
       },
       swipeRowEdit (item) {
-        this.recordVisible = true
-        this.recordFromData = { ...item }
+        this.swipeRecordVisible = true
+        this.swipeRecordFromData = { ...item }
       },
       swipeRowDelete (item) {
         this.$confirm({
@@ -294,10 +358,17 @@
       },
       cancel () {
         this.recordVisible = false
+        this.swipeRecordVisible = false
         this.recordFromData = {
           'id': '',
           'date': null,
           'amount': ''
+        }
+        this.swipeRecordFromData = {
+          'id': '',
+          'date': null,
+          'amount': '',
+          'merchant': ''
         }
       },
       getSwipeCardRecordApi () {
@@ -309,9 +380,10 @@
           limit
         })
           .then(res => {
+            const { list, total } = res.data
             this.state.searchLoading = false
-            this.swipeData = res.data
-            this.swipePagination.total = res.total
+            this.swipeData = list
+            this.swipePagination.total = total
           })
           .catch(() => {
             this.state.searchLoading = false
@@ -326,8 +398,10 @@
           limit
         })
           .then(res => {
+            const { list, total } = res.data
             this.state.searchLoading = false
-            this.repaymentData = res.data
+            this.repaymentPagination.total = total
+            this.repaymentData = list
           })
           .catch(() => {
             this.state.searchLoading = false
@@ -335,23 +409,34 @@
       },
       handleSubmit () {
         this.state.submitLoading = true
-        this.$refs.ruleForm.validate(valid => {
+        const form = this.tagType === '1' ? 'swipeRules' : 'ruleForm'
+        this.$refs[form].validate(valid => {
+          console.log(this.tagType)
+          debugger
           if (valid) {
             let submitApi = null
-            if (this.tagType === 1) {
-              submitApi = this.recordFromData.id ? editSwipeCardRecord : addSwipeCardRecord
+            let data = null
+            let getListApi = null
+            if (this.tagType === '1') {
+              data = this.swipeRecordFromData
+              submitApi = data.id ? editSwipeCardRecord : addSwipeCardRecord
+              getListApi = this.getSwipeCardRecordApi
             } else {
-              submitApi = this.recordFromData.id ? editRepaymentRecord : addRepaymentRecord
+              data = this.recordFromData
+              submitApi = data.id ? editRepaymentRecord : addRepaymentRecord
+              getListApi = this.getRepaymentRecordApi
             }
-            const submitSuccessMessage = this.recordFromData.id ? '修改成功' : '新增成功'
-            submitApi(this.recordFromData)
+            data.customerId = this.$route.query.id
+            const submitSuccessMessage = data.id ? '修改成功' : '新增成功'
+            submitApi(data)
               .then(res => {
                 this.state.submitLoading = false
-                this.getSwipeCardRecordApi()
+                getListApi()
                 this.cancel()
                 this.$message.success(submitSuccessMessage)
               })
               .catch(error => {
+                this.state.submitLoading = false
                 console.log(error)
               })
           } else {
@@ -362,7 +447,7 @@
         })
       },
       addRecord () {
-        this.recordVisible = true
+        this.swipeRecordVisible = true
       }
     }
   }
