@@ -313,12 +313,12 @@
       swipePageChange (page, pageSize) {
         console.log(page, pageSize)
         this.swipePagination.limit = pageSize
-        this.swipePagination.page = pageSize
+        this.swipePagination.page = page
         this.getSwipeCardRecordApi()
       },
       swipeSizeChange (page, pageSize) {
         this.repaymentPagination.limit = pageSize
-        this.repaymentPagination.page = pageSize
+        this.repaymentPagination.page = page
         this.getRepaymentRecordApi()
       },
       repaymentPageChange (page, pageSize) {
