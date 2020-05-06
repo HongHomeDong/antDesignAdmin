@@ -324,12 +324,12 @@
       repaymentPageChange (page, pageSize) {
         console.log(page, pageSize)
         this.repaymentPagination.limit = pageSize
-        this.repaymentPagination.page = pageSize
+        this.repaymentPagination.page = page
         this.getRepaymentRecordApi()
       },
       repaymentSizeChange (page, pageSize) {
         this.repaymentPagination.limit = pageSize
-        this.repaymentPagination.page = pageSize
+        this.repaymentPagination.page = page
         this.getRepaymentRecordApi()
       },
       tagHandle () {
