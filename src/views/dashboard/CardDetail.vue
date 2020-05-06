@@ -105,8 +105,9 @@
         </a-form-model-item>
         <a-form-model-item label="刷卡时间" required prop="date">
           <a-date-picker
+            show-time
             v-model="swipeRecordFromData.date"
-            :default-value="swipeRecordFromData.date && $moment(swipeRecordFromData.date, 'YYYY-MM-DD')"
+            :default-value="swipeRecordFromData.date && $moment(swipeRecordFromData.date, 'YYYY-MM-DD HH:mm:ss')"
             type="date"
             placeholder="选择时间"
             style="width: 100%;"
@@ -141,8 +142,9 @@
         </a-form-model-item>
         <a-form-model-item label="还款时间" required prop="date">
           <a-date-picker
+            show-time
             v-model="recordFromData.date"
-            :default-value="recordFromData.date && $moment(recordFromData.date, 'YYYY-MM-DD')"
+            :default-value="recordFromData.date && $moment(recordFromData.date, 'YYYY-MM-DD HH:mm:ss')"
             type="date"
             placeholder="选择时间"
             style="width: 100%;"
